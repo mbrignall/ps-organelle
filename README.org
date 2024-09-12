@@ -1,5 +1,5 @@
 #+TITLE: Patchstorage Patches Downloader
-#+AUTHOR: Your Name
+#+AUTHOR: mbrignall
 #+DATE: <2024-09-10>
 
 * What is this Patch Downloader?
@@ -38,12 +38,7 @@ This project provides a Python script that downloads patches for the *Organelle*
      poetry install
    #+end_src
 
-4. Alternatively, install dependencies with pip:
-   #+begin_src bash
-     pip install -r requirements.txt
-   #+end_src
-
-5. Set up your Patchstorage API token by adding it to a `.env` file in the project root:
+4. Set up your Patchstorage API token by adding it to a `.env` file in the project root:
    #+begin_src text
      PATCHSTORAGE_API_TOKEN=your_api_token_here
    #+end_src
