@@ -24,6 +24,7 @@ Each patch entry includes the *title*, *author*, *URL*, *description excerpt*, a
 
 ** Why Use Org Mode for Patchstorage Patches?
 
+#+ATTR_HTML: :class center
 [[img/org-mode-unicorn.svg]]
 
 Org mode allows you to neatly structure patch information with headers and tags, making it easy to navigate, search, and manage large sets of data directly within Emacs.
