@@ -16,22 +16,22 @@ It has become an essential tool in my creative process, helping me generate musi
 
 This project provides a Python script that downloads patches for the *Organelle* platform from Patchstorage and organizes them into folders based on their categories for example:
 
-- Synthesizers
-- Effects
-- etc.
+    - Synthesizers
+    - Effects
+    - etc.
 
 Each patch entry includes the title, author, URL, description excerpt, and tags, with the tags neatly aligned to the right for easy readability in Emacs.
 
 ** Features
-- Fetches patches for the Organelle platform from Patchstorage.
-- Generates an Org-mode file with basic patch information (title, author, description excerpt, URL, tags).
-- Tags are right-aligned for improved readability in Emacs.
+  - Fetches patches for the Organelle platform from Patchstorage.
+  - Generates an Org-mode file with basic patch information (title, author, description excerpt, URL, tags).
+  - Tags are right-aligned for improved readability in Emacs.
 
 ** Requirements
-- A Patchstorage API token (stored securely in an environment variable).
-- Python 3.x
-- ~requests~ library
-- ~python-dotenv~ library
+  - A Patchstorage API token (stored securely in an environment variable).
+  - Python 3.x
+  - ~requests~ library
+  - ~python-dotenv~ library
 
 ** Installation
 
@@ -50,17 +50,17 @@ Each patch entry includes the title, author, URL, description excerpt, and tags,
 
 The main script, =ps-organelle.py=, is used to fetch patches for the Organelle platform from Patchstorage.
 
-- To fetch patches, run the following command which puts them in ~patches~ folder:
+  - To fetch patches, run the following command which puts them in ~patches~ folder:
 
-  ~poetry run python ps-organelle.py~
+    ~poetry run python ps-organelle.py~
 
-- Then to generate the org file:
+  - Then to generate the org file:
 
-  ~poetry run python export-to-org.py~
+    ~poetry run python export-to-org.py~
 
-- The script will generate a file called =patches.org= in the project directory.
+  - The script will generate a file called =patches.org= in the project directory.
 
-- Open the =patches.org= file in Emacs to browse the patch information.
+  - Open the =patches.org= file in Emacs to browse the patch information.
 
 ** Example Output
 
@@ -69,16 +69,16 @@ Here is an example of the output in the =patches.org= file:
 #+begin_src
 #* Synthesizer
 #** KarPluck FM                            :karplus_strong:pluck:poly:string:
-- Author: enomorricone
-- URL: https://patchstorage.com/karpluck-fm/
-- Description:
-  A simple but versatile string synthesizer, capable of a range from lo-fi piano sounds to...
+  - Author: enomorricone
+  - URL: https://patchstorage.com/karpluck-fm/
+  - Description:
+    A simple but versatile string synthesizer, capable of a range from lo-fi piano sounds to...
 
 #** FMMOD6                                                     :fm:modulator:
-- Author: user123
-- URL: https://patchstorage.com/fmmod6/
-- Description:
-  A complex FM synthesizer patch that allows deep modulation of parameters...
+  - Author: user123
+  - URL: https://patchstorage.com/fmmod6/
+  - Description:
+    A complex FM synthesizer patch that allows deep modulation of parameters...
 #+end_src
 
 ** License
