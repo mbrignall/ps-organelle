@@ -4,8 +4,8 @@
 
 * What is this Patch Downloader?
 
-[[.img/organelle.png
-]]
+[[img/organelle.png]]
+
 ~Work in Progress~
 
 This project provides a Python script that downloads patches for the *Organelle* platform from Patchstorage and organizes them into an Org file. Each patch entry includes the title, author, URL, description excerpt, and tags, with the tags neatly aligned to the right for easy readability in Emacs.
