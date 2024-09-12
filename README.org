@@ -30,22 +30,14 @@ This project provides a Python script that downloads patches for the *Organelle*
 1. Clone the repository:
    #+begin_src bash
      git clone https://github.com/mbrignall/ps-organelle.git
-   #+end_src
-
-2. Navigate into the project directory:
-   #+begin_src bash
      cd ps-organelle
-   #+end_src
-
-3. Install dependencies using Poetry (recommended):
-   #+begin_src bash
      poetry install
    #+end_src
 
-4. Set up your Patchstorage API token by adding it to a `.env` file in the project root:
-   #+begin_src text
-     PATCHSTORAGE_API_TOKEN=your_api_token_here
-   #+end_src
+2. Set up your Patchstorage API token by adding it to a `.env` file in the project root:
+   
+   ~PATCHSTORAGE_API_TOKEN=your_api_token_here~
+   
 
 ** Usage
 
