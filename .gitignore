@@ -1,0 +1,34 @@
+# Ignore environment variables and sensitive info
+.env
+env.el
+
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+
+# Ignore Poetry virtual environment
+.venv/
+
+# Ignore generated files
+/patches/
+patches.org
+
+*.pyc
+
+# Packages
+/dist/*
+
+# Unit test / coverage reports
+.coverage
+.pytest_cache
+
+.DS_Store
+.idea/*
+.python-version
+.vscode/*
+
+/docs/site/*
+.mypy_cache
+
+.venv
+/poetry.toml

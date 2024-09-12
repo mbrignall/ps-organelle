@@ -1,0 +1,85 @@
+#+TITLE: Patchstorage Patches Downloader
+#+AUTHOR: Your Name
+#+DATE: <2024-09-10>
+
+* Patchstorage Patches Downloader
+
+This project provides a Python script that downloads patches for the *Organelle* platform from Patchstorage and organizes them into an Org file. Each patch entry includes the title, author, URL, description excerpt, and tags, with the tags neatly aligned to the right for easy readability in Emacs.
+
+** Features
+- Fetches patches for the Organelle platform from Patchstorage.
+- Generates an Org-mode file with basic patch information (title, author, description excerpt, URL, tags).
+- Tags are right-aligned for improved readability in Emacs.
+
+** Requirements
+- Python 3.x
+- ~requests~ library
+- ~python-dotenv~ library
+- A Patchstorage API token (stored securely in an environment variable).
+
+** Installation
+
+1. Clone the repository:
+   #+begin_src bash
+     git clone https://github.com/yourusername/ps-organelle.git
+   #+end_src
+
+2. Navigate into the project directory:
+   #+begin_src bash
+     cd ps-organelle
+   #+end_src
+
+3. Install dependencies using Poetry (recommended):
+   #+begin_src bash
+     poetry install
+   #+end_src
+
+4. Alternatively, install dependencies with pip:
+   #+begin_src bash
+     pip install -r requirements.txt
+   #+end_src
+
+5. Set up your Patchstorage API token by adding it to a `.env` file in the project root:
+   #+begin_src text
+     PATCHSTORAGE_API_TOKEN=your_api_token_here
+   #+end_src
+
+** Usage
+
+The main script, =ps-organelle.py=, is used to fetch patches for the Organelle platform from Patchstorage and export them to an Org-mode file.
+
+1. To fetch patches and generate the Org file, run the following command:
+   #+begin_src bash
+     poetry run python ps-organelle.py
+   #+end_src
+
+   Alternatively, if you are not using Poetry:
+   #+begin_src bash
+     python ps-organelle.py
+   #+end_src
+
+2. The script will generate a file called =patches.org= in the project directory.
+
+3. Open the =patches.org= file in Emacs to browse the patch information.
+
+** Example Output
+
+Here is an example of the output in the =patches.org= file:
+
+#+begin_src
+#* Synthesizer
+#** KarPluck FM                            :karplus_strong:pluck:poly:string:
+- Author: enomorricone
+- URL: https://patchstorage.com/karpluck-fm/
+- Description:
+  A simple but versatile string synthesizer, capable of a range from lo-fi piano sounds to...
+
+#** FMMOD6                                                     :fm:modulator:
+- Author: user123
+- URL: https://patchstorage.com/fmmod6/
+- Description:
+  A complex FM synthesizer patch that allows deep modulation of parameters...
+#+end_src
+
+** License
+This project is licensed under the MIT License. See the LICENSE file for details.
