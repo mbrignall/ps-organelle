@@ -20,12 +20,23 @@ This project provides a Python script that downloads patches for the *Organelle*
     - Effects
     - etc.
 
-Each patch entry includes the title, author, URL, description excerpt, and tags, with the tags neatly aligned to the right for easy readability in Emacs.
+Each patch entry includes the *title*, *author*, *URL*, *description excerpt*, and *tags*, with the tags neatly aligned to the right for easy readability in Emacs using Org Mode.
+
+** Why Use Org Mode for Patchstorage Patches?
+
+[[img/org-mode-unicorn.svg]]
+
+Org mode allows you to neatly structure patch information with headers and tags, making it easy to navigate, search, and manage large sets of data directly within Emacs.
+
+  - *Folding headers*: You can collapse or expand sections for easy navigation of categories and patches.
+  - *Tag searching*: Quickly filter patches based on tags, or keywords to find specific types of patches.
+  - *Integration with Emacs*: Org mode provides powerful search, editing, and navigation capabilities, all within the same environment.
+  - *Export capabilities*: Easily export your patch data to other formats like HTML or PDF.
+  - *Literate programming*: If needed, you can combine patch data with executable code for dynamic content generation.
 
 ** Features
   - Fetches patches for the Organelle platform from Patchstorage.
   - Generates an Org-mode file with basic patch information (title, author, description excerpt, URL, tags).
-  - Tags are right-aligned for improved readability in Emacs.
 
 ** Requirements
   - A Patchstorage API token (stored securely in an environment variable).
