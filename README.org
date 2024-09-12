@@ -35,16 +35,16 @@ Each patch entry includes the title, author, URL, description excerpt, and tags,
 
 ** Installation
 
-1. Clone the repository:
-   #+begin_src bash
-     git clone https://github.com/mbrignall/ps-organelle.git
-     cd ps-organelle
-     poetry install
-   #+end_src
+  - Clone the repository:
+     #+begin_src bash
+       git clone https://github.com/mbrignall/ps-organelle.git
+       cd ps-organelle
+       poetry install
+     #+end_src
 
-2. Set up your Patchstorage API token by adding it to a `.env` file in the project root:
+  - Set up your Patchstorage API token by adding it to a `.env` file in the project root:
    
-   ~PATCHSTORAGE_API_TOKEN=your_api_token_here~
+     ~PATCHSTORAGE_API_TOKEN=your_api_token_here~
    
 ** Usage
 
