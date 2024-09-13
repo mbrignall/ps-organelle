@@ -94,17 +94,17 @@ Here is an example of the output in the =patches.org= file:
 
 #+begin_src org
 - Synthesizer
--- KarPluck FM                              :karplus_strong:pluck:poly:string:
-- Author: enomorricone
-- URL: https://patchstorage.com/karpluck-fm/
-- Description:
-  A simple but versatile string synthesizer, capable of a range from lo-fi piano sounds to...
+  -- KarPluck FM                              :karplus_strong:pluck:poly:string:
+    - Author: enomorricone
+    - URL: https://patchstorage.com/karpluck-fm/
+    - Description:
+      A simple but versatile string synthesizer, capable of a range from lo-fi piano sounds to...
 
--- FMMOD6                                                       :fm:modulator:
-- Author: user123
-- URL: https://patchstorage.com/fmmod6/
-- Description:
-  A complex FM synthesizer patch that allows deep modulation of parameters...
+  -- FMMOD6                                                       :fm:modulator:
+    - Author: user123
+    - URL: https://patchstorage.com/fmmod6/
+    - Description:
+      A complex FM synthesizer patch that allows deep modulation of parameters...
 #+end_src
 
 ** License
