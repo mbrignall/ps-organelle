@@ -12,9 +12,9 @@ I absolutely love the Organelle from Critter and Guitari!
 
 It has become an essential tool in my creative process, helping me generate musical ideas, experiment with effects, and explore Pure Data. The best part is the community they've built around their instruments, which keeps the inspiration flowing. You can learn more about it [[https://www.critterandguitari.com/organelle][here]].
 
-[[https://patchstorage.com/][Patchstorage]] is an excellent community driven platform of Audio and Visual programming enthusiasts and it turns out they have a neat [[https://github.com/patchstorage/patchstorage-docs/wiki][API]]!
+[[https://patchstorage.com/][Patchstorage]] is an excellent community-driven platform of Audio and Visual programming enthusiasts and it turns out they have a neat [[https://github.com/patchstorage/patchstorage-docs/wiki][API]]!
 
-This project provides a Python script that downloads patches for the *Organelle* platform from Patchstorage and organizes them into folders based on their categories for example:
+This project provides a Python script that downloads patches for the *Organelle* platform from Patchstorage and organizes them into folders based on their categories, for example:
 
     - Synthesizers
     - Effects
@@ -38,6 +38,8 @@ Org mode allows you to neatly structure patch information with headers and tags,
 ** Features
   - Fetches patches for the Organelle platform from Patchstorage.
   - Generates an Org-mode file with basic patch information (title, author, description excerpt, URL, tags).
+  - Allows filtering patches by category or tag.
+  - Exports patch information into an Org-mode file for easy navigation in Emacs.
 
 ** Requirements
   - A Patchstorage API token (stored securely in an environment variable).
@@ -60,17 +62,29 @@ Org mode allows you to neatly structure patch information with headers and tags,
    
 ** Usage
 
-The main script, =ps-organelle.py=, is used to fetch patches for the Organelle platform from Patchstorage.
+The main script, =ps-organelle.py=, is used to fetch patches for the Organelle platform from Patchstorage. You can use different flags to customize the fetch and export behavior:
 
-  - To fetch patches, run the following command which puts them in ~patches~ folder:
+  - To fetch and download all patches:
+    #+begin_src bash
+    poetry run python ps_organelle.py --full
+    #+end_src
 
-    ~poetry run python ps-organelle.py~
+  - To fetch and export all patches to an Org-mode file:
+    #+begin_src bash
+    poetry run python ps_organelle.py --full --org
+    #+end_src
 
-  - Then to generate the org file:
+  - To fetch patches filtered by category:
+    #+begin_src bash
+    poetry run python ps_organelle.py --category Synthesizer
+    #+end_src
 
-    ~poetry run python export-to-org.py~
+  - To fetch patches filtered by tag and export them to Org mode:
+    #+begin_src bash
+    poetry run python ps_organelle.py --tag reverb --org
+    #+end_src
 
-  - The script will generate a file called =patches.org= in the project directory.
+  - The script will generate a file called =patches.org= in the project directory if the `--org` flag is provided.
 
   - Open the =patches.org= file in Emacs to browse the patch information.
 
@@ -78,19 +92,19 @@ The main script, =ps-organelle.py=, is used to fetch patches for the Organelle p
 
 Here is an example of the output in the =patches.org= file:
 
-#+begin_src
+#+begin_src org
 - Synthesizer
-  - KarPluck FM                            :karplus_strong:pluck:poly:string:
-    - Author: enomorricone
-    - URL: https://patchstorage.com/karpluck-fm/
-    - Description:
-      A simple but versatile string synthesizer, capable of a range from lo-fi piano sounds to...
+-- KarPluck FM                              :karplus_strong:pluck:poly:string:
+- Author: enomorricone
+- URL: https://patchstorage.com/karpluck-fm/
+- Description:
+  A simple but versatile string synthesizer, capable of a range from lo-fi piano sounds to...
 
-  - FMMOD6                                                     :fm:modulator:
-    - Author: user123
-    - URL: https://patchstorage.com/fmmod6/
-    - Description:
-      A complex FM synthesizer patch that allows deep modulation of parameters...
+-- FMMOD6                                                       :fm:modulator:
+- Author: user123
+- URL: https://patchstorage.com/fmmod6/
+- Description:
+  A complex FM synthesizer patch that allows deep modulation of parameters...
 #+end_src
 
 ** License

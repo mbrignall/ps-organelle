@@ -1,8 +1,10 @@
+import argparse
 import os
 import requests
-import time
 from dotenv import load_dotenv
+import time
 from requests.exceptions import ChunkedEncodingError, ConnectionError
+from export_to_org import export_patches_to_org  # Import the Org export function
 
 # Load environment variables
 load_dotenv()
@@ -10,10 +12,9 @@ load_dotenv()
 # Fetch the API token from .env
 API_TOKEN = os.getenv('PATCHSTORAGE_API_TOKEN')
 
-# Correct API base URLs
+# API URLs
 BASE_PATCHES_URL = 'https://patchstorage.com/api/beta/patches'
 PATCH_DETAIL_URL_TEMPLATE = 'https://patchstorage.com/api/beta/patches/{patch_id}'
-DOWNLOAD_URL_TEMPLATE = 'https://patchstorage.com/api/beta/patches/{patch_id}/files/{file_id}/download/'
 
 # Headers for API requests, including User-Agent
 HEADERS = {
@@ -25,57 +26,51 @@ HEADERS = {
 # Directory where patches will be saved
 BASE_DOWNLOAD_DIR = 'patches'
 
-def fetch_patches(platform_id=154):
-    """Fetches patches for the Organelle platform using the beta API."""
+# Function to fetch patches based on command-line flags
+def fetch_patches(platform_id=154, category=None, tag=None):
+    """Fetch patches for the Organelle platform with optional filtering by category or tag."""
     url = BASE_PATCHES_URL
     params = {
         'platforms': platform_id,
-        'page': 1,        # Start on page 1
-        'per_page': 100   # Adjust as needed
+        'page': 1,
+        'per_page': 100  # Adjust as needed
     }
+
+    if category:
+        params['categories'] = category
+    if tag:
+        params['tags'] = tag
 
     patches = []
     while True:
         try:
             response = requests.get(url, headers=HEADERS, params=params)
-            
             if response.status_code == 403:
                 print(f"Error: Received status code {response.status_code} - Forbidden")
-                print(f"Response content: {response.text}")
                 break
-            
             if response.status_code != 200:
                 print(f"Error: Received status code {response.status_code} from {url}")
-                print(f"Response content: {response.text}")
                 break
 
-            # Attempt to parse the response as JSON
             data = response.json()
-            
-            # Check if the response is a list of patches
+
             if isinstance(data, list):
-                patches.extend(data)  # If data is a list, extend it directly
+                patches.extend(data)
             else:
                 print(f"Unexpected response format: {data}")
                 break
 
-            # Check if we've fetched all patches (if the length of patches returned is less than per_page, stop)
             if len(data) < params['per_page']:
-                break  # No more pages to fetch
-            
-            # Increment the page parameter for the next request
+                break
             params['page'] += 1
 
-        except requests.exceptions.JSONDecodeError as e:
-            print(f"JSON decode error: {e}")
-            print(f"Response text: {response.text}")
-            break
         except requests.exceptions.RequestException as e:
             print(f"Request failed: {e}")
             break
 
     return patches
 
+# Function to fetch detailed patch info
 def fetch_patch_detail(patch_id):
     """Fetch detailed information about a patch including file URLs."""
     url = PATCH_DETAIL_URL_TEMPLATE.format(patch_id=patch_id)
@@ -90,73 +85,86 @@ def fetch_patch_detail(patch_id):
         print(f"Request failed for patch {patch_id}: {e}")
         return None
 
+# Function to download patch files
 def download_patch_file(download_url, save_path, retries=3):
-    """Download a single patch file using the provided download URL with retry logic."""
     attempt = 0
     while attempt < retries:
         try:
             print(f"Downloading {save_path} (Attempt {attempt + 1}/{retries})...")
             response = requests.get(download_url, headers=HEADERS, stream=True, timeout=10)
 
-            # Check if the response is successful
             if response.status_code == 200:
                 with open(save_path, 'wb') as f:
                     for chunk in response.iter_content(chunk_size=1024):
-                        if chunk:  # Filter out keep-alive chunks
+                        if chunk:
                             f.write(chunk)
                 print(f"Downloaded patch file {save_path}")
-                return  # Exit the function after a successful download
+                return
             else:
-                print(f"Failed to download patch file from {download_url}. Status code: {response.status_code}")
-                print(f"Response content: {response.text}")
+                print(f"Failed to download patch file. Status code: {response.status_code}")
                 break
 
         except (ChunkedEncodingError, ConnectionError, requests.exceptions.Timeout) as e:
             print(f"Download failed due to {type(e).__name__}: {e}")
             attempt += 1
-            time.sleep(2)  # Wait before retrying
+            time.sleep(2)
             if attempt == retries:
                 print(f"Failed to download {save_path} after {retries} attempts.")
                 break
 
-def process_and_download_patches():
-    """Process patches and download patch files into category/tag subfolders."""
-    patches = fetch_patches()
-
+# Function to download and process patches
+def process_and_download_patches(patches):
     for patch in patches:
         patch_id = patch['id']
         patch_title = patch['title']
-
-        # Get the first category and first tag
         category = patch['categories'][0]['slug'] if patch['categories'] else 'uncategorized'
         first_tag = patch['tags'][0]['slug'] if patch['tags'] else 'untagged'
 
-        # Create top-level category folder
         category_dir = os.path.join(BASE_DOWNLOAD_DIR, category)
-        if not os.path.exists(category_dir):
-            os.makedirs(category_dir)
+        os.makedirs(category_dir, exist_ok=True)
 
-        # Create subfolder for the first tag within the category
         tag_dir = os.path.join(category_dir, first_tag)
-        if not os.path.exists(tag_dir):
-            os.makedirs(tag_dir)
+        os.makedirs(tag_dir, exist_ok=True)
 
-        # Fetch detailed patch information to get download URLs
         patch_detail = fetch_patch_detail(patch_id)
         if patch_detail:
             for file_obj in patch_detail.get('files', []):
                 download_url = file_obj['url']
                 file_name = file_obj['filename']
-
-                # Set the full path where the file will be saved
                 save_path = os.path.join(tag_dir, file_name)
-
-                # Download the file
                 download_patch_file(download_url, save_path)
 
+# CLI setup with argparse
 def main():
-    """Main function to download all Organelle patches and store them by tag."""
-    process_and_download_patches()
+    parser = argparse.ArgumentParser(description="Download and export Organelle patches from Patchstorage")
+    
+    parser.add_argument('--full', action='store_true', help="Fetch all patches from the Organelle platform")
+    parser.add_argument('--category', type=str, help="Filter patches by category (e.g., Synthesizer, Effect)")
+    parser.add_argument('--tag', type=str, help="Filter patches by tag")
+    parser.add_argument('--org', action='store_true', help="Export patches to Org-mode format")
+    
+    args = parser.parse_args()
+
+    if args.full:
+        print("Fetching all patches for Organelle platform...")
+        patches = fetch_patches()
+    elif args.category:
+        print(f"Fetching patches in the category: {args.category}")
+        patches = fetch_patches(category=args.category)
+    elif args.tag:
+        print(f"Fetching patches with the tag: {args.tag}")
+        patches = fetch_patches(tag=args.tag)
+    else:
+        print("No valid option provided, fetching all patches by default...")
+        patches = fetch_patches()
+
+    if args.org:
+        print("Exporting patches to Org mode...")
+        export_patches_to_org(patches)
+        print("Patches exported to patches.org")
+    else:
+        print("Downloading patches...")
+        process_and_download_patches(patches)
 
 if __name__ == '__main__':
     main()
