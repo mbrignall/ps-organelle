@@ -145,19 +145,26 @@ def main():
     
     args = parser.parse_args()
 
+    # Initialize patches to None
+    patches = None
+
+    # Fetch patches based on the flags provided
     if args.full:
         print("Fetching all patches for Organelle platform...")
         patches = fetch_patches()
-    elif args.category:
+    if args.category:
         print(f"Fetching patches in the category: {args.category}")
         patches = fetch_patches(category=args.category)
-    elif args.tag:
+    if args.tag:
         print(f"Fetching patches with the tag: {args.tag}")
         patches = fetch_patches(tag=args.tag)
-    else:
-        print("No valid option provided, fetching all patches by default...")
+
+    # If no specific fetching flag is provided, fetch all patches by default
+    if patches is None:
+        print("No valid fetch option provided, fetching all patches by default...")
         patches = fetch_patches()
 
+    # Handle export to Org mode
     if args.org:
         print("Exporting patches to Org mode...")
         export_patches_to_org(patches)
